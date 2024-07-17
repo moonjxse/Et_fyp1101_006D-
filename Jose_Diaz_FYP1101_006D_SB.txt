@@ -1,0 +1,137 @@
+#Nombre: Jose Diaz
+#Fecha: 17/07/2024
+#Seccion: FYP1101_006D
+#Con toda la fé en el señor profesor :3
+import random
+import csv
+
+trabajadores = [
+    "Juan Pérez", "María García", "Carlos López", "Ana Martínez", "Pedro Rodríguez",
+    "Laura Hernández", "Miguel Sánchez", "Isabel Gómez", "Francisco Díaz", "Elena Fernández"
+]
+sueldos = {}
+def asignar_sueldos_aleatorios():
+   
+    global sueldos 
+    sueldos = {trabajador: random.randint(300000, 2500000) for trabajador in trabajadores}
+    print("Sueldos asignados aleatoriamente.")
+   
+    for trabajador, sueldo in sueldos.items():
+        print(f"{trabajador}: ${sueldo}")
+def clasificar_sueldos():
+    
+    if not sueldos:
+        print("No se han asignado sueldos aún.") #Lamentablemente en este mundo de povres
+        return
+    sueldos_bajos = {}
+    sueldos_medios = {}
+    sueldos_altos = {}
+    for trabajador, sueldo in sueldos.items():
+        if sueldo < 800000:
+            sueldos_bajos[trabajador] = sueldo
+        elif 800000 <= sueldo <= 2000000:
+            sueldos_medios[trabajador] = sueldo
+        else:
+            sueldos_altos[trabajador] = sueldo
+            
+    total_sueldos = sum(sueldos.values())
+    
+    print(f"\nSueldos menores a $800.000 TOTAL: {len(sueldos_bajos)}\n")
+    print(f"{'Nombre empleado':<20} {'Sueldo':>10}")
+    for nombre, sueldo in sueldos_bajos.items():
+        print(f"{nombre:<20} ${sueldo:>10}")
+
+    print(f"\nSueldos entre $800.000 y $2.000.000 TOTAL: {len(sueldos_medios)}\n")
+    print(f"{'Nombre empleado':<20} {'Sueldo':>10}")
+    for nombre, sueldo in sueldos_medios.items():
+        print(f"{nombre:<20} ${sueldo:>10,.0f}")
+
+    print(f"\nSueldos superiores a $2.000.000 total: {len(sueldos_altos)}\n")
+    print(f"{'Nombre empleado':<20} {'Sueldo':>10}")
+    for nombre, sueldo in sueldos_altos.items():
+        print(f"{nombre:<20} ${sueldo:>10,.0f}")
+
+    print(f"\ntoal sueldo: ${total_sueldos:,.0f}") #Mucha plataplataplataplata
+def ver_estadisticas():
+    if not sueldos:
+        print("No se han asignado sueldos aún.")
+        return
+    sueldos_lista = list(sueldos.values())
+    promedio = sum(sueldos_lista) / len(sueldos_lista)
+    sueldo_maximo = max(sueldos_lista)
+    sueldo_minimo = min(sueldos_lista)
+    media_geometrica = (sum(sueldos_lista) ** (1 / len(sueldos_lista)))
+
+    print(f"Estadísticas de sueldos:\n")
+    print(f"{'Sueldo más alto:':<25} ${sueldo_maximo}")
+    print(f"{'Sueldo más bajo:':<25} ${sueldo_minimo}")
+    print(f"{'Promedio de sueldos:':<25} ${promedio}")
+    print(f"{'Media geométrica:':<25} ${media_geometrica}")
+
+def reporte_sueldos():
+    if not sueldos:
+        print("No se han asignado sueldos aún.") #Lamentablemente :(
+        return
+    
+    print("1.Asignar Sueldos Aleatorios")
+    print("2.Clasificar Sueldos")
+    print("3. Ver estadisticas")
+    print("4. Reporte De Sueldos")
+    print("5. Salir")
+    input("Seleccione un numero del 1 al 5: ")
+    
+    nombre_archivo = 'reporte_sueldos.csv'
+    with open(nombre_archivo, mode='w', newline='') as archivo_csv:
+        escritor_csv = csv.writer(archivo_csv)
+        escritor_csv.writerow(['Nombre empleado', 'Sueldo Base', 'Descuento Salud', 'Descuento AFP', 'Sueldo Líquido'])
+
+        for trabajador, sueldo in sueldos.items():
+            descuento_salud = sueldo * 0.07
+            descuento_afp = sueldo * 0.12
+            sueldo_liquido = sueldo - descuento_salud - descuento_afp
+            escritor_csv.writerow([trabajador, sueldo, descuento_salud, descuento_afp, sueldo_liquido])
+
+    print(f"datos guardados exitosamente en '{nombre_archivo}'")
+
+    print(f"{'nombre empleado':<20} {'sueldo Base':>15} {'Descuento Salud':>20} {'Descuento AFP':>20} {'Sueldo Líquido':>20}")
+    for trabajador, sueldo in sueldos.items():
+        descuento_salud = sueldo * 0.07
+        descuento_afp = sueldo * 0.12
+        sueldo_liquido = sueldo - descuento_salud - descuento_afp
+        print(f"{trabajador:<20} ${sueldo:>14,.0f} ${descuento_salud:>19,.0f} ${descuento_afp:>19,.0f} ${sueldo_liquido:>19,.0f}")
+
+def salir():
+    print("Muchas gracias por usar este programa") #El mejor y lo sabe profe (mentira)
+    print("Finalizando programa...")
+    print("Desarrollado por José Diaz")
+    print("Seccion: 006D")
+    print("Rut: 22.106.182-9")
+    validar=False
+    return validar
+def menu():
+    validar=True
+    while validar:
+        print("\nMenú de opciones:")
+        print("1. Asignar sueldos aleatorios")
+        print("2. Clasificar sueldos")
+        print("3. Ver estadísticas")
+        print("4. Reporte de sueldos")
+        print("5. Salir del programa")
+        opcion = input("Selecciona una opción (1-5): ")
+        if opcion == '1':
+            asignar_sueldos_aleatorios()
+        elif opcion == '2':
+            clasificar_sueldos()
+        elif opcion == '3':
+            ver_estadisticas()
+        elif opcion == '4':
+            reporte_sueldos()
+        elif opcion == '5':
+            salir()
+            break
+        else:
+            print("Opción no válida. Por favor, selecciona una opción entre 1 y 5.")
+menu()
+
+
+
